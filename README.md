@@ -7,7 +7,7 @@ My attempts at the problems from [Advent of Code](https://adventofcode.com/). So
 | Day | 2022 |
 |---|---|
 | 01 | [Go][22d01] |
-| 02 | [Go][22d02] |
+| 02 |  |
 | 03 |  |
 | 04 |  |
 | 05 |  |
@@ -38,4 +38,3 @@ TODO: Complete usage documentation.
 <!-- Links -->
 
 [22d01]: 2022/day_01/
-[22d02]: 2022/day_02/
