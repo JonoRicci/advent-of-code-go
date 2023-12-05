@@ -13,7 +13,7 @@ import (
 // logic. It takes a slice of strings as input and returns an integer sum and an
 // error. The function also logs the time taken to execute.
 func Part1(input []string) (int, error) {
-	start := time.Now() // Record the start time for execution duration tracking
+	start := time.Now() // Record start time for execution duration tracking
 
 	sum := 0 // Initialise sum to zero
 
@@ -42,7 +42,16 @@ func Part1(input []string) (int, error) {
 
 	log.Println("Part 1 took:", time.Since(start)) // Log time taken to execute
 
-	return sum, nil // Return the calculated sum and nil error
+	return sum, nil
+}
+
+func Part2(input []string) (int, error) {
+	start := time.Now() // Record start time for execution duration tracking
+
+	sum := 0 // Initalise sum to zero
+
+	log.Println("Part 2 took:", time.Since(start))
+	return sum, nil
 }
 
 func main() {
@@ -59,10 +68,15 @@ func main() {
 
 	// Execute Part 1 of the problem
 	part1, err := Part1(values)
-
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	log.Println("Part 1:", part1) // Log the result of Part 1
+	part2, err := Part2(values)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	log.Println("Part 1:", part1)
+	log.Println("Part 2:", part2)
 }
