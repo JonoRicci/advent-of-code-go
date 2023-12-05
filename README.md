@@ -4,9 +4,9 @@ My attempts at the problems from [Advent of Code](https://adventofcode.com/). So
 
 ## Solutions
 
-| Day | 2022 |
+| Day | 2023 |
 |---|---|
-| 01 | [Go][22d01] |
+| 01 | [Go][23d01] |
 | 02 |  |
 | 03 |  |
 | 04 |  |
@@ -37,4 +37,4 @@ TODO: Complete usage documentation.
 
 <!-- Links -->
 
-[22d01]: 2022/day_01/
+[23d01]: 2023/day_01/
