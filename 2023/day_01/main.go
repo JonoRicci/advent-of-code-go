@@ -2,63 +2,144 @@
 package main
 
 import (
+	"fmt"
 	"jonoricci/advent-of-code-go/common"
 	"log"
+	"regexp"
 	"strconv"
 	"strings"
 	"time"
+	"unicode"
 )
 
-// Part1 processes the input strings and calculates a sum based on the problem's
-// logic. It takes a slice of strings as input and returns an integer sum and an
-// error. The function also logs the time taken to execute.
+// Part1 calculates the sum of two digit numbers from a slice of strings.
+// Each number is formed by the first and last digit of each string.
 func Part1(input []string) (int, error) {
-	start := time.Now() // Record start time for execution duration tracking
-
-	sum := 0 // Initialise sum to zero
+	start := time.Now()
+	sum := 0
 
 	for _, line := range input {
-		chars := strings.Split(line, "") // Split line into individual characters
-		ints := []int{}                  // Initialise a slice to store integers
+		var firstDigit, lastDigit rune
 
-		// Convert each character to an integer
-		for _, char := range chars {
-			charInt, err := strconv.Atoi(char) // Convert character to integer
-
-			if err != nil {
-				continue // Skip characters that can't be converted to integers
+		// Find first digit
+		for _, char := range line {
+			if unicode.IsDigit(char) {
+				firstDigit = char
+				break
 			}
-
-			ints = append(ints, charInt) // Add the converted integer to the slice
 		}
 
-		// Retrieve the first and last digits from the slice of integers
-		firstDigit := ints[0]
-		lastDigit := ints[len(ints)-1]
+		// Find the last digit
+		for i := len(line) - 1; i >= 0; i-- {
+			if unicode.IsDigit(rune(line[i])) {
+				lastDigit = rune(line[i])
+				break
+			}
+		}
 
-		// Calculate the contribution of this line to the sum
+		// Convert first and last digits to integers and add to sum
+		firstDigitInt, _ := strconv.Atoi(string(firstDigit))
+		lastDigitInt, _ := strconv.Atoi(string(lastDigit))
+		// Multiply first digit by 10 to add numbers together
+		// 1abc2 = 1 (10) + 2 (2) = 12.
+		sum += firstDigitInt*10 + lastDigitInt
+	}
+
+	log.Println("[INFO] Part 1 took:", time.Since(start)) // Log time taken to execute
+	return sum, nil
+}
+
+// Part2 calculates the sum of two digit numbers from a slice of strings.
+// Each number is formed by the first and last digit, where digits can be
+// integers or spelled-out words in a provided map.
+func Part2(input []string) (int, error) {
+	start := time.Now()
+
+	numberMap := map[string]int{
+		"one":   1,
+		"two":   2,
+		"three": 3,
+		"four":  4,
+		"five":  5,
+		"six":   6,
+		"seven": 7,
+		"eight": 8,
+		"nine":  9,
+	}
+	sum := 0 // Initalise sum to zero
+	for _, line := range input {
+		firstDigit, lastDigit, err := searchLine(line, numberMap)
+		if err != nil {
+			log.Println("[ERROR]:", err)
+			log.Fatal(err)
+		}
 		sum += firstDigit*10 + lastDigit
 	}
 
-	log.Println("Part 1 took:", time.Since(start)) // Log time taken to execute
-
+	log.Println("[INFO] Part 2 took:", time.Since(start))
 	return sum, nil
 }
 
-func Part2(input []string) (int, error) {
-	start := time.Now() // Record start time for execution duration tracking
+// searchLine extracts the first and last digits from a line.
+// Returns the digits as integers or an error if no valid digit is found.
+func searchLine(line string, numberMap map[string]int) (int, int, error) {
+	// Create regex pattern from numberMap keys
+	var pattern strings.Builder
+	var err error
 
-	sum := 0 // Initalise sum to zero
+	pattern.WriteString("(")
+	for key := range numberMap {
+		pattern.WriteString(key)
+		pattern.WriteString("|")
+	}
+	pattern.WriteString("\\d)")
 
-	log.Println("Part 2 took:", time.Since(start))
-	return sum, nil
+	regex := regexp.MustCompile(pattern.String())
+
+	// Find matches
+	firstMatch := regex.FindStringSubmatch(line)
+	var firstDigit, lastDigit int
+	if len(firstMatch) > 0 {
+		firstDigit, err = digitValue(firstMatch[0], numberMap)
+		if err != nil {
+			log.Println("[ERROR]:", err)
+		}
+	}
+
+	// Iterate backward through the string to find the last digit
+	for i := len(line) - 1; i >= 0; i-- {
+		lastMatch := regex.FindStringSubmatch(line[i:])
+		if len(lastMatch) > 0 {
+			lastDigit, err = digitValue(lastMatch[0], numberMap)
+			if err != nil {
+				log.Println("[ERROR]:", err)
+			}
+			break
+		}
+	}
+
+	return firstDigit, lastDigit, nil
+}
+
+// digitValue converts a string to it's numeric value.
+// It uses a map for spelled-out numbers and standard conversion for digits.
+func digitValue(match string, numberMap map[string]int) (int, error) {
+	if digit, exists := numberMap[match]; exists {
+		return digit, nil
+	}
+	digit, err := strconv.Atoi(match)
+	if err != nil {
+		return 0, fmt.Errorf("[ERROR]: Invalid digit: %s", match)
+	}
+	return digit, nil
 }
 
 func main() {
-	input, err := common.ReadInputFile() // Read input from file
+	input, err := common.ReadInputFile()
 
 	if err != nil {
-		log.Fatal(err) // Log and terminate if there's an error reading the file
+		log.Println("[ERROR]:", err)
+		log.Fatal(err)
 	}
 
 	// Split into lines
@@ -66,17 +147,20 @@ func main() {
 	// Remove empty strings from the input
 	values := common.RemoveEmptyStrings(inputData)
 
-	// Execute Part 1 of the problem
+	// Execute Part 1
 	part1, err := Part1(values)
 	if err != nil {
+		log.Println("[ERROR]:", err)
 		log.Fatal(err)
 	}
 
+	// Execute Part 2
 	part2, err := Part2(values)
 	if err != nil {
+		log.Println("[ERROR]:", err)
 		log.Fatal(err)
 	}
 
-	log.Println("Part 1:", part1)
-	log.Println("Part 2:", part2)
+	log.Println("[INFO] Part 1:", part1)
+	log.Println("[INFO] Part 2:", part2)
 }
