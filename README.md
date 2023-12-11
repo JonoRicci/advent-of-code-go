@@ -6,8 +6,8 @@ My attempts at the problems from [Advent of Code](https://adventofcode.com/). So
 
 | Day | 2023 |
 |---|---|
-| 01 | [Go][23d01] |
-| 02 |  |
+| 01 | [Trebuchet?!][23d01] |
+| 02 | [Cube Conundrum][23d02] |
 | 03 |  |
 | 04 |  |
 | 05 |  |
@@ -38,3 +38,4 @@ TODO: Complete usage documentation.
 <!-- Links -->
 
 [23d01]: 2023/day_01/
+[23d02]: 2023/day_02/
