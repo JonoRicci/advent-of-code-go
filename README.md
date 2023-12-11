@@ -34,7 +34,28 @@ My attempts at the problems from [Advent of Code](https://adventofcode.com/). So
 
 ## Usage
 
-TODO: Complete usage documentation.
+Navigate to problem directory and run `go run main.go`.
+
+```shell
+[19:59:13] ➜  advent-of-code-go git:(main) pwd
+/Users/jono/repos/github/jonoricci/advent-of-code-go
+[20:01:37] ➜  advent-of-code-go git:(main) ✗ cd 2023/day_01
+[20:01:43] ➜  day_01 git:(main) ✗ go run main.go
+2023/12/11 20:01:46 [INFO] Part 1 took: 65.667µs
+2023/12/11 20:01:46 [INFO] Part 2 took: 17.475625ms
+2023/12/11 20:01:46 [INFO] Part 1: 54597
+2023/12/11 20:01:46 [INFO] Part 2: 54504
+```
+
+### Testing
+
+The `ADVENT_OF_CODE_TEST` environment variable will dictate what puzzle input to use.
+
+```shell
+export "ADVENT_OF_CODE_TEST=" # Use regular puzzle "input.txt"
+export "ADVENT_OF_CODE_TEST=PART_01" # Use "part01_test.txt"
+export "ADVENT_OF_CODE_TEST=PART_02" # Use "part02_test.txt"
+```
 
 <!-- Links -->
 
