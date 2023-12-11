@@ -8,7 +8,7 @@ My attempts at the problems from [Advent of Code](https://adventofcode.com/). So
 |---|---|
 | 01 | [Trebuchet?!][23d01] |
 | 02 | [Cube Conundrum][23d02] |
-| 03 |  |
+| 03 | [Gear Ratios][23d03] |
 | 04 |  |
 | 05 |  |
 | 06 |  |
@@ -40,3 +40,4 @@ TODO: Complete usage documentation.
 
 [23d01]: 2023/day_01/
 [23d02]: 2023/day_02/
+[23d03]: 2023/day_03/
