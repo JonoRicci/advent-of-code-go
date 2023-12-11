@@ -30,6 +30,7 @@ My attempts at the problems from [Advent of Code](https://adventofcode.com/). So
 | 22 |  |
 | 23 |  |
 | 24 |  |
+| 25 |  |
 
 ## Usage
 
