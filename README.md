@@ -1,6 +1,12 @@
-# Jono's Advent Of Code GoLang Solutions
+# Jono's Advent Of Code GoLang Solutions <!-- omit in toc -->
 
 My attempts at the problems from [Advent of Code](https://adventofcode.com/). Solutions are organised by year and problem.
+
+## Table of Contents <!-- omit in toc -->
+
+- [Solutions](#solutions)
+- [Usage](#usage)
+  - [Testing](#testing)
 
 ## Solutions
 
@@ -50,6 +56,19 @@ Navigate to problem directory and run `go run main.go`.
 ### Testing
 
 The `ADVENT_OF_CODE_TEST` environment variable will dictate what puzzle input to use.
+
+It is included in each problem's `main` function:
+
+```go
+// Set env var which dictates what input to use
+// Options are "", "PART_01", "PART_02"
+err := os.Setenv("ADVENT_OF_CODE_TEST", "PART_01")
+if err != nil {
+  fmt.Println("Error setting environment variable:", err)
+}
+```
+
+However if the above is not present you can set it from your shell like so:
 
 ```shell
 export "ADVENT_OF_CODE_TEST=" # Use regular puzzle "input.txt"

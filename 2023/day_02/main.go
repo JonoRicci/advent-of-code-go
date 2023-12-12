@@ -2,8 +2,10 @@
 package main
 
 import (
+	"fmt"
 	"jonoricci/advent-of-code-go/common"
 	"log"
+	"os"
 	"strconv"
 	"strings"
 	"time"
@@ -109,6 +111,13 @@ func findMinimumSet(subsets []string) (int, int, int) {
 }
 
 func main() {
+	// Set env var which dictates what input to use
+	// Options are "", "PART_01", "PART_02"
+	err := os.Setenv("ADVENT_OF_CODE_TEST", "")
+	if err != nil {
+		fmt.Println("Error setting environment variable:", err)
+	}
+
 	input, err := common.ReadInputFile()
 
 	if err != nil {
