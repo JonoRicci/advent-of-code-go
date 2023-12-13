@@ -1,4 +1,4 @@
-// Package main solves the Advent of Code 2023 Day 03 problem.
+// Package main solves the Advent of Code 2023 Day 04 problem.
 package main
 
 import (
