@@ -15,7 +15,7 @@ My attempts at the problems from [Advent of Code](https://adventofcode.com/). So
 | 01 | [Trebuchet?!][23d01] |
 | 02 | [Cube Conundrum][23d02] |
 | 03 | [Gear Ratios][23d03] |
-| 04 |  |
+| 04 | [Scratchcards][23d04] |
 | 05 |  |
 | 06 |  |
 | 07 |  |
@@ -81,3 +81,4 @@ export "ADVENT_OF_CODE_TEST=PART_02" # Use "part02_test.txt"
 [23d01]: 2023/day_01/
 [23d02]: 2023/day_02/
 [23d03]: 2023/day_03/
+[23d04]: 2023/day_04/
