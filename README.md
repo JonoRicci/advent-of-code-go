@@ -9,7 +9,6 @@ My attempts at the problems from [Advent of Code](https://adventofcode.com/). So
 - [Usage](#usage)
   - [Go Version](#go-version)
 - [Config File](#config-file)
-- [Common Utilities](#common-utilities)
 
 ## Disclaimer
 
@@ -24,7 +23,7 @@ The solutions presented in this repository reflect my ongoing learning process a
 | 03 | [Gear Ratios][23d03] |
 | 04 | [Scratchcards][23d04] |
 | 05 | [If You Give A Seed A Fertilizer][23d05] |
-| 06 |  |
+| 06 | [Wait For It][23d06] |
 | 07 |  |
 | 08 |  |
 | 09 |  |
@@ -82,16 +81,7 @@ Each day has it's own `config.yaml` config file which can be used to modify some
 [23d03]: 2023/day_03/
 [23d04]: 2023/day_04/
 [23d05]: 2023/day_05/
+[23d06]: 2023/day_06/
 
 [url_zap]: https://github.com/uber-go/zap
 [url_goenv]: https://github.com/go-nv/goenv
-
-## Common Utilities
-
-I'm trying to abstract common problems into the `common` package which is imported across each day's solution:
-
-- reading input files (various methods)
-  - parsing input files into a string slice
-  - removing empty strings
-- reading config files
-- initialising logging
