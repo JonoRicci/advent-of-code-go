@@ -1,4 +1,4 @@
-# Jono's Advent Of Code GoLang Solutions <!-- omit in toc -->
+# Jono's Advent Of Code Golang Solutions <!-- omit in toc -->
 
 My attempts at the problems from [Advent of Code](https://adventofcode.com/). Solutions are organised by year and problem.
 
