@@ -1,2 +1,2 @@
-inputFile: test_input.txt
-logLevel: Debug
+inputFile: input.txt
+logLevel: Info
