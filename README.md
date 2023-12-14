@@ -6,7 +6,7 @@ My attempts at the problems from [Advent of Code](https://adventofcode.com/). So
 
 - [Solutions](#solutions)
 - [Usage](#usage)
-- [`config.yaml` Config File](#configyaml-config-file)
+- [Config File](#config-file)
 
 ## Solutions
 
@@ -55,9 +55,9 @@ Navigate to problem directory and run `go run main.go`.
 
 Running commands from the repo root directory or any other directory won't work as the config expects relative directories from the main file.
 
-## `config.yaml` Config File
+## Config File
 
-Each day has it's own yaml onfig file which can be used to modify some behaviours.
+Each day has it's own `config.yaml` config file which can be used to modify some behaviours.
 
 - `inputFile`: relative path to the puzzle input, can switch between test and real input.
 - `logLevel`: [zap][url_zap] logging levels, handy to switch between `Debug` and `Info`.
