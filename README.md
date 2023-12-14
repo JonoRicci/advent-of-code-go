@@ -4,11 +4,16 @@ My attempts at the problems from [Advent of Code](https://adventofcode.com/). So
 
 ## Table of Contents <!-- omit in toc -->
 
+- [Disclaimer](#disclaimer)
 - [Solutions](#solutions)
 - [Usage](#usage)
   - [Go Version](#go-version)
 - [Config File](#config-file)
 - [Common Utilities](#common-utilities)
+
+## Disclaimer
+
+The solutions presented in this repository reflect my ongoing learning process and, as such, may not always be the most efficient or idiomatic approaches to solving these problems in Go. I welcome any feedback or suggestions that would help enhance my understanding of Go and improve the quality of these solutions.
 
 ## Solutions
 
