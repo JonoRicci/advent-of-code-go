@@ -6,11 +6,15 @@ import (
 	"jonoricci/advent-of-code-go/common"
 	"log"
 	"math"
-	"os"
 	"strconv"
 	"strings"
 	"time"
+
+	"go.uber.org/zap"
 )
+
+// global variable for logging
+var logger *zap.SugaredLogger
 
 // Using global var for input header names
 var sectionHeaders = []string{
@@ -24,17 +28,24 @@ var sectionHeaders = []string{
 }
 
 func main() {
-	// Set env var which dictates what input to use
-	// Options are "", "PART_01", "PART_02"
-	err := os.Setenv("ADVENT_OF_CODE_TEST", "")
+	// Load config file
+	cfg, err := common.ReadConfig()
 	if err != nil {
-		log.Fatalln("Error setting environment variable:", err)
+		log.Fatalf("Error reading config: %v", err)
 	}
 
-	input, err := common.ReadInputFile()
+	// Initalise logging
+	logger, err = common.InitialiseLogger(cfg)
+	if err != nil {
+		log.Fatalf("Error initialising logger: %v", err)
+	}
+	defer logger.Sync() // Flush any buffered log entries
+
+	// Read puzzle input
+	input, err := common.ReadInputFile(cfg)
 
 	if err != nil {
-		log.Fatalf("[ERROR] Couldn't read input file: %v", err)
+		logger.Fatalf("Couldn't read input file: %v", err)
 	}
 
 	// Split into lines
@@ -45,17 +56,17 @@ func main() {
 	// Execute Part 1
 	part1, err := Part1(values)
 	if err != nil {
-		log.Fatalf("[ERROR] Part 1: %v", err)
+		logger.Fatalf("Part 1: %v", err)
 	}
 
 	// Execute Part 2
 	part2, err := Part2(values)
 	if err != nil {
-		log.Fatalf("[ERROR] Part 2: %v", err)
+		logger.Fatalf("Part 2: %v", err)
 	}
 
-	log.Println("[INFO] Part 1:", part1)
-	log.Println("[INFO] Part 2:", part2)
+	logger.Infoln("Part 1:", part1)
+	logger.Infoln("Part 2:", part2)
 }
 
 // Part1 treats each seed as an individual integer and finds the lowest location
@@ -71,7 +82,7 @@ func Part1(input []string) (int, error) {
 
 	lowestLocation := processSeeds(seeds, parsedMaps)
 
-	log.Println("[INFO] Part 1 took:", time.Since(start))
+	logger.Infoln("Part 1 took:", time.Since(start))
 	return lowestLocation, nil
 }
 
@@ -82,17 +93,21 @@ func processSeeds(seeds []int, parsedMaps map[string][]RangeMap) int {
 	lowestLocation := math.MaxInt32
 
 	for _, seed := range seeds {
+		logger.Debug("Processing seed:", seed)
 		location := seed
 
 		for _, header := range sectionHeaders {
+			logger.Debug("Processing header:", header)
 			location = applyMapping(location, parsedMaps[header])
 		}
 
 		if location < lowestLocation {
 			lowestLocation = location
+			logger.Debug("Lowest location so far is:", lowestLocation)
 		}
 	}
 
+	logger.Debug("Lowest location is:", lowestLocation)
 	return lowestLocation
 }
 
@@ -116,7 +131,7 @@ func parseInputData(input []string, seedRange bool) ([]int, map[string][]RangeMa
 	// Get the seeds
 	seeds, err := extractSeeds(input[0], seedRange)
 	if err != nil {
-		log.Fatalln("[ERROR] Parsing seeds:", err)
+		logger.Fatalln("Parsing seeds:", err)
 	}
 
 	// Map for storing the parsed maps
@@ -131,7 +146,7 @@ func parseInputData(input []string, seedRange bool) ([]int, map[string][]RangeMa
 				// Parse previous section
 				parsedMaps[currentHeader], err = parseMap(currentSection)
 				if err != nil {
-					log.Fatalln("[ERROR] Parsing %S:", currentHeader, err)
+					logger.Fatalln("Parsing %S:", currentHeader, err)
 				}
 			}
 			// Reset for new section
@@ -146,7 +161,7 @@ func parseInputData(input []string, seedRange bool) ([]int, map[string][]RangeMa
 	if currentHeader != "" {
 		parsedMaps[currentHeader], err = parseMap(currentSection)
 		if err != nil {
-			log.Fatalln("[ERROR] Parsing last section", currentHeader, err)
+			return nil, nil, fmt.Errorf("parsing %s, %v", currentHeader, err)
 		}
 	}
 
@@ -181,10 +196,12 @@ func extractSeeds(input string, isRangeFormat bool) ([]int, error) {
 			if err != nil {
 				return nil, err
 			}
+			logger.Debug("Found seed:", start)
 			length, err := strconv.Atoi(numberParts[i+1])
 			if err != nil {
 				return nil, err
 			}
+			logger.Debug("Seed has length of:", length)
 			for j := 0; j < length; j++ {
 				seeds = append(seeds, start+j)
 			}
@@ -196,6 +213,7 @@ func extractSeeds(input string, isRangeFormat bool) ([]int, error) {
 			if err != nil {
 				return nil, err
 			}
+			logger.Debug("Found seed:", seed)
 			seeds = append(seeds, seed)
 		}
 	}
@@ -254,6 +272,6 @@ func Part2(input []string) (int, error) {
 
 	lowestLocation := processSeeds(seeds, parsedMaps)
 
-	log.Println("[INFO] Part 2 took:", time.Since(start))
+	logger.Infoln("Part 2 took:", time.Since(start))
 	return lowestLocation, nil
 }

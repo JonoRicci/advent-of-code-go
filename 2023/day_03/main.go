@@ -2,28 +2,37 @@
 package main
 
 import (
-	"fmt"
 	"jonoricci/advent-of-code-go/common"
 	"log"
-	"os"
 	"strconv"
 	"time"
 	"unicode"
+
+	"go.uber.org/zap"
 )
 
+// global variable for logging
+var logger *zap.SugaredLogger
+
 func main() {
-	// Set env var which dictates what input to use
-	// Options are "", "PART_01", "PART_02"
-	err := os.Setenv("ADVENT_OF_CODE_TEST", "")
+	// Load config file
+	cfg, err := common.ReadConfig()
 	if err != nil {
-		fmt.Println("Error setting environment variable:", err)
+		log.Fatalf("Error reading config: %v", err)
 	}
 
-	input, err := common.ReadInputFileAs2DSlice()
+	// Initalise logging
+	logger, err = common.InitialiseLogger(cfg)
+	if err != nil {
+		log.Fatalf("Error initialising logger: %v", err)
+	}
+	defer logger.Sync() // Flush any buffered log entries
+
+	// Read puzzle input
+	input, err := common.ReadInputFileAs2DSlice(cfg)
 
 	if err != nil {
-		log.Println("[ERROR]:", err)
-		log.Fatal(err)
+		logger.Fatalln(err)
 	}
 
 	// Make copy of the input so each function can modify it's input independently
@@ -33,19 +42,17 @@ func main() {
 	// Execute Part 1
 	part1, err := Part1(inputPart1)
 	if err != nil {
-		log.Println("[ERROR]:", err)
-		log.Fatal(err)
+		logger.Fatalln(err)
 	}
 
 	// Execute Part 2
 	part2, err := Part2(inputPart2)
 	if err != nil {
-		log.Println("[ERROR]:", err)
-		log.Fatal(err)
+		logger.Fatalln(err)
 	}
 
-	log.Println("[INFO] Part 1:", part1)
-	log.Println("[INFO] Part 2:", part2)
+	logger.Infoln("Part 1:", part1)
+	logger.Infoln("Part 2:", part2)
 }
 
 // copy2DSlice makes a deep copy of the input so that each function can modify
@@ -73,7 +80,7 @@ func Part1(input [][]rune) (int, error) {
 				fullNumStr := getFullNumber(input, i, j)
 				num, err := strconv.Atoi(fullNumStr)
 				if err != nil {
-					log.Fatal("[ERROR]:", err)
+					logger.Fatalln(err)
 				}
 				// log.Println("[DEBUG]:", num, sum)
 				sum += num
@@ -84,7 +91,7 @@ func Part1(input [][]rune) (int, error) {
 		}
 	}
 
-	log.Println("[INFO] Part 1 took:", time.Since(start))
+	logger.Infoln("Part 1 took:", time.Since(start))
 	return sum, nil
 }
 
@@ -180,7 +187,7 @@ func Part2(input [][]rune) (int, error) {
 					num1, err1 := strconv.Atoi(nums[0])
 					num2, err2 := strconv.Atoi(nums[1])
 					if err1 != nil || err2 != nil {
-						log.Fatal("[ERROR]:", err1, err2)
+						logger.Fatalln(err1, err2)
 					}
 					gearRatio := num1 * num2
 					sum += gearRatio
@@ -189,7 +196,7 @@ func Part2(input [][]rune) (int, error) {
 		}
 	}
 
-	log.Println("[INFO] Part 2 took:", time.Since(start))
+	logger.Infoln("Part 2 took:", time.Since(start))
 	return sum, nil
 }
 

@@ -2,27 +2,37 @@
 package main
 
 import (
-	"fmt"
 	"jonoricci/advent-of-code-go/common"
 	"log"
-	"os"
 	"strconv"
 	"strings"
 	"time"
+
+	"go.uber.org/zap"
 )
 
+// global variable for logging
+var logger *zap.SugaredLogger
+
 func main() {
-	// Set env var which dictates what input to use
-	// Options are "", "PART_01", "PART_02"
-	err := os.Setenv("ADVENT_OF_CODE_TEST", "")
+	// Load config file
+	cfg, err := common.ReadConfig()
 	if err != nil {
-		fmt.Println("Error setting environment variable:", err)
+		log.Fatalf("Error reading config: %v", err)
 	}
 
-	input, err := common.ReadInputFile()
+	// Initalise logging
+	logger, err = common.InitialiseLogger(cfg)
+	if err != nil {
+		log.Fatalf("Error initialising logger: %v", err)
+	}
+	defer logger.Sync() // Flush any buffered log entries
+
+	// Read puzzle input
+	input, err := common.ReadInputFile(cfg)
 
 	if err != nil {
-		log.Fatalln("[ERROR]:", err)
+		logger.Fatalln(err)
 	}
 
 	// Split into lines
@@ -33,17 +43,17 @@ func main() {
 	// Execute Part 1
 	part1, err := Part1(values)
 	if err != nil {
-		log.Fatalln("[ERROR]:", err)
+		logger.Fatalln(err)
 	}
 
 	// Execute Part 2
 	part2, err := Part2(values)
 	if err != nil {
-		log.Fatalln("[ERROR]:", err)
+		logger.Fatalln(err)
 	}
 
-	log.Println("[INFO] Part 1:", part1)
-	log.Println("[INFO] Part 2:", part2)
+	logger.Infoln("Part 1:", part1)
+	logger.Infoln("Part 2:", part2)
 }
 
 // Part1 processes a list of scratchcards, calculates the score for each card
@@ -64,12 +74,12 @@ func Part1(input []string) (int, error) {
 
 		winningNums, err := convertToIntSlice(winningNumsStr)
 		if err != nil {
-			log.Fatalln("[ERROR]:", err)
+			logger.Fatalln(err)
 		}
 
 		yourNums, err := convertToIntSlice(yourNumsStr)
 		if err != nil {
-			log.Fatalln("[ERROR]:", err)
+			logger.Fatalln(err)
 		}
 
 		// Create a map for winning numbers lookup
@@ -94,7 +104,7 @@ func Part1(input []string) (int, error) {
 		sum += score
 	}
 
-	log.Println("[INFO] Part 1 took:", time.Since(start))
+	logger.Infoln("Part 1 took:", time.Since(start))
 	return sum, nil
 }
 
@@ -104,7 +114,7 @@ func convertToIntSlice(strSlice []string) ([]int, error) {
 	for _, str := range strSlice {
 		num, err := strconv.Atoi(str)
 		if err != nil {
-			log.Fatalln("[ERROR]:", err)
+			logger.Fatalln(err)
 		}
 		intSlice = append(intSlice, num)
 	}
@@ -137,12 +147,12 @@ func Part2(input []string) (int, error) {
 
 		winningNums, err := convertToIntSlice(winningNumsStr)
 		if err != nil {
-			log.Fatalln("[ERROR]:", err)
+			logger.Fatalln(err)
 		}
 
 		yourNums, err := convertToIntSlice(yourNumsStr)
 		if err != nil {
-			log.Fatalln("[ERROR]:", err)
+			logger.Fatalln(err)
 		}
 
 		winningNumsMap := make(map[int]bool)
@@ -171,6 +181,6 @@ func Part2(input []string) (int, error) {
 		totalCards += copies
 	}
 
-	log.Println("[INFO] Part 2 took:", time.Since(start))
+	logger.Infoln("Part 2 took:", time.Since(start))
 	return totalCards, nil
 }

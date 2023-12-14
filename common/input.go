@@ -4,27 +4,43 @@ package common
 import (
 	"bufio"
 	"os"
+
+	"gopkg.in/yaml.v2"
 )
+
+// Config
+type Config struct {
+	InputFile string `yaml:"inputFile"`
+	LogLevel  string `yaml:"logLevel"`
+}
+
+// readConfig reads the YAML configuration file and returns the config
+func ReadConfig(paths ...string) (Config, error) {
+	var cfg Config
+	configFilePath := "config.yaml" // Default configuration file
+
+	if len(paths) > 0 {
+		configFilePath = paths[0]
+	}
+
+	data, err := os.ReadFile(configFilePath)
+	if err != nil {
+		return cfg, err
+	}
+
+	err = yaml.Unmarshal(data, &cfg)
+	if err != nil {
+		return cfg, err
+	}
+
+	return cfg, nil
+}
 
 // ReadInputFile reads contents of a file and returns them as a string.
 // The function reads from `input.txt` by default unless the env var
 // "ADVENT_OF_CODE_TEST" has been set to "TRUE".
-func ReadInputFile() (string, error) {
-	filePath := "input.txt"
-
-	// Check for env var and determinte what input to use.
-	envValue := os.Getenv("ADVENT_OF_CODE_TEST")
-	if envValue == "TRUE" {
-		filePath = "test.txt"
-	} else if envValue == "PART_01" {
-		filePath = "part01_test.txt"
-	} else if envValue == "PART_02" {
-		filePath = "part02_test.txt"
-	}
-
-	// Read the file specified by filePath.
-
-	data, err := os.ReadFile(filePath)
+func ReadInputFile(cfg Config) (string, error) {
+	data, err := os.ReadFile(cfg.InputFile)
 
 	// Go error handling.
 	if err != nil {
@@ -38,21 +54,8 @@ func ReadInputFile() (string, error) {
 // ReadInputFileAs2DSlice reads contents of a file and returns them as a 2D
 // slice of runes. Useful for taking input as a 2D grid with coordinates.
 // Will remove empty lines.
-func ReadInputFileAs2DSlice() ([][]rune, error) {
-	filePath := "input.txt"
-
-	// Check for env var and determinte what input to use.
-	envValue := os.Getenv("ADVENT_OF_CODE_TEST")
-	if envValue == "TRUE" {
-		filePath = "test.txt"
-	} else if envValue == "PART_01" {
-		filePath = "part01_test.txt"
-	} else if envValue == "PART_02" {
-		filePath = "part02_test.txt"
-	}
-
-	// Read the file specified by filePath.
-	file, err := os.Open(filePath)
+func ReadInputFileAs2DSlice(cfg Config) ([][]rune, error) {
+	file, err := os.Open(cfg.InputFile)
 	if err != nil {
 		return nil, err
 	}

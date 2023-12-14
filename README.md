@@ -6,7 +6,7 @@ My attempts at the problems from [Advent of Code](https://adventofcode.com/). So
 
 - [Solutions](#solutions)
 - [Usage](#usage)
-  - [Testing](#testing)
+- [Config File](#config-file)
 
 ## Solutions
 
@@ -43,38 +43,24 @@ My attempts at the problems from [Advent of Code](https://adventofcode.com/). So
 Navigate to problem directory and run `go run main.go`.
 
 ```shell
-[19:59:13] ➜  advent-of-code-go git:(main) pwd
+[13:26:13] ➜  advent-of-code-go git:(main) pwd
 /Users/jono/repos/github/jonoricci/advent-of-code-go
-[20:01:37] ➜  advent-of-code-go git:(main) ✗ cd 2023/day_01
-[20:01:43] ➜  day_01 git:(main) ✗ go run main.go
-2023/12/11 20:01:46 [INFO] Part 1 took: 65.667µs
-2023/12/11 20:01:46 [INFO] Part 2 took: 17.475625ms
-2023/12/11 20:01:46 [INFO] Part 1: 54597
-2023/12/11 20:01:46 [INFO] Part 2: 54504
+[13:27:53] ➜  advent-of-code-go git:(main) ✗ cd 2023/day_01
+[13:28:07] ➜  day_01 git:(main) ✗ go run main.go
+2023-12-14T13:28:09.981Z	info	day_01/main.go:95	Part 1 took: 102.291µs
+2023-12-14T13:28:09.997Z	info	day_01/main.go:125	Part 2 took: 15.032625ms
+2023-12-14T13:28:09.997Z	info	day_01/main.go:58	Part 1: 54597
+2023-12-14T13:28:09.997Z	info	day_01/main.go:59	Part 2: 54504
 ```
 
-### Testing
+Running commands from the root won't work as the config expects relative directories.
 
-The `ADVENT_OF_CODE_TEST` environment variable will dictate what puzzle input to use.
+## Config File
 
-It is included in each problem's `main` function:
+Each day has it's own config file which can be used to modify some behaviours.
 
-```go
-// Set env var which dictates what input to use
-// Options are "", "PART_01", "PART_02"
-err := os.Setenv("ADVENT_OF_CODE_TEST", "PART_01")
-if err != nil {
-  fmt.Println("Error setting environment variable:", err)
-}
-```
-
-However if the above is not present you can set it from your shell like so:
-
-```shell
-export "ADVENT_OF_CODE_TEST=" # Use regular puzzle "input.txt"
-export "ADVENT_OF_CODE_TEST=PART_01" # Use "part01_test.txt"
-export "ADVENT_OF_CODE_TEST=PART_02" # Use "part02_test.txt"
-```
+- `inputFile`: relative path to the puzzle input, can switch between test and real input.
+- `logLevel`: [zap][url_zap] logging levels, handy to switch between `Debug` and `Info`.
 
 <!-- Links -->
 
@@ -83,3 +69,5 @@ export "ADVENT_OF_CODE_TEST=PART_02" # Use "part02_test.txt"
 [23d03]: 2023/day_03/
 [23d04]: 2023/day_04/
 [23d05]: 2023/day_05/
+
+[url_zap]: https://github.com/uber-go/zap
