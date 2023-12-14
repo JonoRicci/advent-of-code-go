@@ -6,7 +6,9 @@ My attempts at the problems from [Advent of Code](https://adventofcode.com/). So
 
 - [Solutions](#solutions)
 - [Usage](#usage)
+  - [Go Version](#go-version)
 - [Config File](#config-file)
+- [Common Utilities](#common-utilities)
 
 ## Solutions
 
@@ -55,6 +57,12 @@ Navigate to problem directory and run `go run main.go`.
 
 Running commands from the repo root directory or any other directory won't work as the config expects relative directories from the main file.
 
+### Go Version
+
+I'm using `1.21.4` throughout the repo as that was the latest available.
+
+I'm using [goenv][url_goenv] to manage Go versions in my development environment. This places a `.go-version` file in my root directory.
+
 ## Config File
 
 Each day has it's own `config.yaml` config file which can be used to modify some behaviours.
@@ -71,3 +79,14 @@ Each day has it's own `config.yaml` config file which can be used to modify some
 [23d05]: 2023/day_05/
 
 [url_zap]: https://github.com/uber-go/zap
+[url_goenv]: https://github.com/go-nv/goenv
+
+## Common Utilities
+
+I'm trying to abstract common problems into the `common` package which is imported across each day's solution:
+
+- reading input files (various methods)
+  - parsing input files into a string slice
+  - removing empty strings
+- reading config files
+- initialising logging
