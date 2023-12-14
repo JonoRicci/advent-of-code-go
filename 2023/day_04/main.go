@@ -46,7 +46,9 @@ func main() {
 	log.Println("[INFO] Part 2:", part2)
 }
 
-// Part1 ...
+// Part1 processes a list of scratchcards, calculates the score for each card
+// based on the number of matching numbers with the winning numbers, and returns
+// the total score of all cards.
 func Part1(input []string) (int, error) {
 	start := time.Now()
 	sum := 0
@@ -109,7 +111,9 @@ func convertToIntSlice(strSlice []string) ([]int, error) {
 	return intSlice, nil
 }
 
-// Part2 ...
+// Part2 processes the scratchcards according to the new rules where each
+// matching number wins additional scratchcards. It returns the total number of
+// scratchcards, including both the original and the won copies.
 func Part2(input []string) (int, error) {
 	start := time.Now()
 

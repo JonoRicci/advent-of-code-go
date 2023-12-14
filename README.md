@@ -16,7 +16,7 @@ My attempts at the problems from [Advent of Code](https://adventofcode.com/). So
 | 02 | [Cube Conundrum][23d02] |
 | 03 | [Gear Ratios][23d03] |
 | 04 | [Scratchcards][23d04] |
-| 05 |  |
+| 05 | [If You Give A Seed A Fertilizer][23d05] |
 | 06 |  |
 | 07 |  |
 | 08 |  |
@@ -82,3 +82,4 @@ export "ADVENT_OF_CODE_TEST=PART_02" # Use "part02_test.txt"
 [23d02]: 2023/day_02/
 [23d03]: 2023/day_03/
 [23d04]: 2023/day_04/
+[23d05]: 2023/day_05/
