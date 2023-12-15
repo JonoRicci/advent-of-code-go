@@ -8,7 +8,8 @@ My attempts at the problems from [Advent of Code](https://adventofcode.com/). So
 - [Solutions](#solutions)
 - [Usage](#usage)
   - [Go Version](#go-version)
-- [Config File](#config-file)
+  - [Config File](#config-file)
+  - [Unit Tests](#unit-tests)
 
 ## Disclaimer
 
@@ -67,7 +68,7 @@ I'm using `1.21.4` throughout the repo as that was the latest available.
 
 I'm using [goenv][url_goenv] to manage Go versions in my development environment. This places a `.go-version` file in my root directory.
 
-## Config File
+### Config File
 
 Each day has it's own `config.yaml` config file which can be used to modify some behaviours.
 
@@ -86,3 +87,17 @@ Each day has it's own `config.yaml` config file which can be used to modify some
 
 [url_zap]: https://github.com/uber-go/zap
 [url_goenv]: https://github.com/go-nv/goenv
+
+### Unit Tests
+
+Some problems have a unit test file in their directory usually named `main_test.go`. You can run this test by navigating to the directory and running `go test`.
+
+```shell
+[16:59:03] ➜  day_07 git:(main) ✗ pwd
+/Users/jono/repos/github/jonoricci/advent-of-code-go/2023/day_07
+[16:59:05] ➜  day_07 git:(main) ✗ ls
+config.yaml    input.txt      main.go        main_test.go   test_input.txt
+[16:59:09] ➜  day_07 git:(main) ✗ go test
+PASS
+ok  	jonoricci/advent-of-code-go/2023/day_07	0.234s
+```
