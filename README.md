@@ -24,7 +24,7 @@ The solutions presented in this repository reflect my ongoing learning process a
 | 04 | [Scratchcards][23d04] |
 | 05 | [If You Give A Seed A Fertilizer][23d05] |
 | 06 | [Wait For It][23d06] |
-| 07 | [Camel Cards][23d07]] |
+| 07 | [Camel Cards][23d07] |
 | 08 |  |
 | 09 |  |
 | 10 |  |
