@@ -102,7 +102,7 @@ func Part1(input []string) (int, error) {
 		// Get the hand type and sort the hand left to right by card strength
 		handType, sortedHand := evaluateHand(hand)
 		hands = append(hands, handData{hand, bid, handType, sortedHand})
-		logger.Debugln("Hand:", hand, "Bid:", bid, "Type:", handType, "Sorted:", sortedHand)
+		// logger.Debugln("Hand:", hand, "Bid:", bid, "Type:", handType, "Sorted:", sortedHand)
 	}
 
 	// Sort hands based on type and card strength.
@@ -114,16 +114,13 @@ func Part1(input []string) (int, error) {
 		}
 
 		// If the hand types are the same, then compare higher cards.
-		// Iterate through each card in the sorted order (which is sorted by frequency and then rank within evaluateHand).
-		for k := 0; k < len(hands[i].sortedHand) && k < len(hands[j].sortedHand); k++ {
-			// Compare the strength of each card at position k in both hands.
-			if hands[i].sortedHand[k] != hands[j].sortedHand[k] {
-				// Use the cardStrength function to determine which card is stronger.
-				// If the cards are different, the stronger card determines which hand is stronger.
-				return cardStrength(rune(hands[i].sortedHand[k][0])) > cardStrength(rune(hands[j].sortedHand[k][0]))
+		// Iterate through each card in the sorted order.
+		for k := 0; k < len(hands[i].hand) && k < len(hands[j].hand); k++ {
+			if cardStrength(rune(hands[i].hand[k])) != cardStrength(rune(hands[j].hand[k])) {
+				return cardStrength(rune(hands[i].hand[k])) > cardStrength(rune(hands[j].hand[k]))
 			}
 		}
-		logger.Debugln("Potential tie detected between hands:", hands[i].hand, "and", hands[j].hand)
+		logger.Warnln("Potential tie detected between hands:", hands[i].hand, "and", hands[j].hand)
 		return false
 	})
 
