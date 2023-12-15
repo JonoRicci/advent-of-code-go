@@ -17,7 +17,6 @@ import (
 var logger *zap.SugaredLogger
 
 // global variable for card strength
-// Add a map to define the strength of each card
 var cardStrengthMap = map[rune]int{
 	'A': 13,
 	'K': 12,
