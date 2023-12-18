@@ -37,8 +37,6 @@ func ReadConfig(paths ...string) (Config, error) {
 }
 
 // ReadInputFile reads contents of a file and returns them as a string.
-// The function reads from `input.txt` by default unless the env var
-// "ADVENT_OF_CODE_TEST" has been set to "TRUE".
 func ReadInputFile(cfg Config) (string, error) {
 	data, err := os.ReadFile(cfg.InputFile)
 

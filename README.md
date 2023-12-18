@@ -54,10 +54,10 @@ Navigate to problem directory and run `go run main.go`.
 /Users/jono/repos/github/jonoricci/advent-of-code-go
 [13:27:53] ➜  advent-of-code-go git:(main) ✗ cd 2023/day_01
 [13:28:07] ➜  day_01 git:(main) ✗ go run main.go
-2023-12-14T13:28:09.981Z	info	day_01/main.go:95	Part 1 took: 102.291µs
-2023-12-14T13:28:09.997Z	info	day_01/main.go:125	Part 2 took: 15.032625ms
-2023-12-14T13:28:09.997Z	info	day_01/main.go:58	Part 1: 54597
-2023-12-14T13:28:09.997Z	info	day_01/main.go:59	Part 2: 54504
+2023-12-14T13:28:09.981Z   info   day_01/main.go:95    Part 1 took: 102.291µs
+2023-12-14T13:28:09.997Z   info   day_01/main.go:125   Part 2 took: 15.032625ms
+2023-12-14T13:28:09.997Z   info   day_01/main.go:58    Part 1: 54597
+2023-12-14T13:28:09.997Z   info   day_01/main.go:59    Part 2: 54504
 ```
 
 Running commands from the repo root directory or any other directory won't work as the config expects relative directories from the main file.
@@ -68,12 +68,28 @@ I'm using `1.21.4` throughout the repo as that was the latest available.
 
 I'm using [goenv][url_goenv] to manage Go versions in my development environment. This places a `.go-version` file in my root directory.
 
+You do not need to have [goenv][url_goenv] installed to run this code, you just need to have the same version of Go available to use on your system.
+
 ### Config File
 
 Each day has it's own `config.yaml` config file which can be used to modify some behaviours.
 
 - `inputFile`: relative path to the puzzle input, can switch between test and real input.
 - `logLevel`: [zap][url_zap] logging levels, handy to switch between `Debug` and `Info`.
+
+### Unit Tests
+
+Some problems have a unit test file in their directory usually named `main_test.go`. You can run this test by navigating to the directory and running `go test`.
+
+```shell
+[16:59:03] ➜  day_07 git:(main) ✗ pwd
+/Users/jono/repos/github/jonoricci/advent-of-code-go/2023/day_07
+[16:59:05] ➜  day_07 git:(main) ✗ ls
+config.yaml    input.txt      main.go        main_test.go   test_input.txt
+[16:59:09] ➜  day_07 git:(main) ✗ go test
+PASS
+ok     jonoricci/advent-of-code-go/2023/day_07   0.234s
+```
 
 <!-- Links -->
 
@@ -87,17 +103,3 @@ Each day has it's own `config.yaml` config file which can be used to modify some
 
 [url_zap]: https://github.com/uber-go/zap
 [url_goenv]: https://github.com/go-nv/goenv
-
-### Unit Tests
-
-Some problems have a unit test file in their directory usually named `main_test.go`. You can run this test by navigating to the directory and running `go test`.
-
-```shell
-[16:59:03] ➜  day_07 git:(main) ✗ pwd
-/Users/jono/repos/github/jonoricci/advent-of-code-go/2023/day_07
-[16:59:05] ➜  day_07 git:(main) ✗ ls
-config.yaml    input.txt      main.go        main_test.go   test_input.txt
-[16:59:09] ➜  day_07 git:(main) ✗ go test
-PASS
-ok  	jonoricci/advent-of-code-go/2023/day_07	0.234s
-```

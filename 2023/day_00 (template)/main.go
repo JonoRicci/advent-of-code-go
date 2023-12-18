@@ -29,7 +29,6 @@ func main() {
 
 	// Read puzzle input
 	input, err := common.ReadInputFile(cfg)
-
 	if err != nil {
 		logger.Fatalln(err)
 	}
@@ -44,14 +43,13 @@ func main() {
 	if err != nil {
 		logger.Fatalln(err)
 	}
+	logger.Infoln("Part 1:", part1)
 
 	// Execute Part 2
 	part2, err := Part2(values)
 	if err != nil {
 		logger.Fatalln(err)
 	}
-
-	logger.Infoln("Part 1:", part1)
 	logger.Infoln("Part 2:", part2)
 }
 
