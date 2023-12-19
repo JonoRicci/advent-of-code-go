@@ -42,7 +42,7 @@ func main() {
 	// Execute Part 1
 	part1, err := Part1(values)
 	if err != nil {
-		logger.Fatalln(err)
+		logger.Warnln(err) // Switched to warn from fatal to pass part 02 test input
 	}
 	logger.Infoln("Part 1:", part1)
 
@@ -54,7 +54,8 @@ func main() {
 	logger.Infoln("Part 2:", part2)
 }
 
-// Part1 ...
+// Part1 navigates through the puzzle input to count the steps from "AAA" to
+// "ZZZ".
 func Part1(input []string) (int, error) {
 	start := time.Now()
 	sum := 0
@@ -121,11 +122,73 @@ func navigateNodes(directions []string, nodes map[string][2]string) (int, error)
 	return steps, nil
 }
 
-// Part2 ...
+// Part2 navigates through the puzzle input to count the steps using the Ghost
+// method of navigation, which is to start simultaneously on all nodes ending
+// in A and navigate through all of them simultaneously where the result is all
+// nodes are on a step where each node ends in Z.
 func Part2(input []string) (int, error) {
 	start := time.Now()
 	sum := 0
 
+	directions := parseDirections(input[0])
+	nodes := parseNodes(input[1:])
+
+	sum, err := navigateGhostNodes(directions, nodes)
+	if err != nil {
+		return 0, err
+	}
+
 	logger.Infoln("Part 2 took:", time.Since(start))
 	return sum, nil
+}
+
+// navigateGhostNodes takes a slice of directions and a map of nodes, starting
+// from all nodes ending with 'A'. It navigates through the nodes based on the
+// directions until all current nodes end with 'Z'. The directions are applied
+// cyclically.
+func navigateGhostNodes(directions []string, nodes map[string][2]string) (int, error) {
+	var current []string
+	steps := 0
+	directionLength := len(directions)
+
+	for node := range nodes {
+		if strings.HasSuffix(node, "A") {
+			current = append(current, node)
+		}
+	}
+
+	for !endWithZ(current) {
+		next := []string{}
+		direction := directions[steps%directionLength]
+
+		for _, node := range current {
+			logger.Debugln("Current:", current, "Steps:", steps, "Direction:", direction)
+			if nextNode, exists := nodes[node]; exists {
+				if direction == "R" {
+					next = append(next, nextNode[1])
+					// logger.Debugln("Elements:", next)
+				} else if direction == "L" {
+					next = append(next, nextNode[0])
+					// logger.Debugln("Elements:", next)
+				}
+			} else {
+				return -1, fmt.Errorf("invalid node: %s", node)
+			}
+		}
+
+		current = next
+		steps++
+	}
+	return steps, nil
+}
+
+// endWithZ checks if all nodes in the provided slice end with 'Z'. It returns
+// true if every node in the slice has a name ending with 'Z', otherwise false.
+func endWithZ(nodes []string) bool {
+	for _, node := range nodes {
+		if !strings.HasSuffix(node, "Z") {
+			return false
+		}
+	}
+	return true
 }

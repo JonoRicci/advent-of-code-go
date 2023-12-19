@@ -62,7 +62,7 @@ func TestPart1(t *testing.T) {
 // TestPart2 ensures function produces the correct result.
 // This works for either test or real puzzle input.
 func TestPart2(t *testing.T) {
-	expectedValues := []int{0}
+	expectedValues := []int{6, 0}
 	result, err := Part2(MockInput())
 	if err != nil {
 		t.Fatalf("Part2 returned an error: %v", err)
