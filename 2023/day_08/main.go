@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"jonoricci/advent-of-code-go/common"
 	"log"
+	"sort"
 	"strings"
 	"time"
 
@@ -147,39 +148,76 @@ func Part2(input []string) (int, error) {
 // directions until all current nodes end with 'Z'. The directions are applied
 // cyclically.
 func navigateGhostNodes(directions []string, nodes map[string][2]string) (int, error) {
-	var current []string
-	steps := 0
-	directionLength := len(directions)
+	// Initial setup to identify start nodes and prepare data structures for memoization, etc.
+	// Implement an efficient traversal algorithm, possibly using BFS, DFS, or a modified version suitable for this problem.
+	// Incorporate cycle detection to avoid infinite loops in paths.
+	// Use memoization to store and reuse results of subproblems.
+	// Prune paths that do not contribute to the solution.
+	// Return the step count when the condition is met.
 
+	// Identify start nodes (end in "A")
+	var startNodes []string
 	for node := range nodes {
 		if strings.HasSuffix(node, "A") {
-			current = append(current, node)
+			startNodes = append(startNodes, node)
 		}
 	}
+	logger.Debugln("Starting nodes:", startNodes)
 
-	for !endWithZ(current) {
-		next := []string{}
-		direction := directions[steps%directionLength]
+	// My attempt at BFS (Breadth First Search)
+	// Queue for BFS
+	type nodeState struct {
+		nodes []string
+		steps int
+	}
+	queue := []nodeState{{nodes: startNodes, steps: 0}}
 
-		for _, node := range current {
-			logger.Debugln("Current:", current, "Steps:", steps, "Direction:", direction)
-			if nextNode, exists := nodes[node]; exists {
-				if direction == "R" {
-					next = append(next, nextNode[1])
-					// logger.Debugln("Elements:", next)
-				} else if direction == "L" {
-					next = append(next, nextNode[0])
-					// logger.Debugln("Elements:", next)
-				}
+	if len(startNodes) == 0 {
+		logger.Debugln("No starting nodes ending with 'A' found")
+		return -1, fmt.Errorf("no starting nodes found")
+	}
+
+	// Track visited states
+	visited := make(map[string]struct{})
+
+	directionLength := len(directions)
+	for len(queue) > 0 {
+		currentState := queue[0] // Deqeue first element
+		queue = queue[1:]        // Queue is empty
+
+		// Check if all nodes end with "Z"
+		if endWithZ(currentState.nodes) {
+			logger.Debugln("Solution found at steps:", currentState.steps)
+			return currentState.steps, nil
+		}
+
+		// Serialise current state for cycle detection
+		serialised := serialisedState(currentState.nodes)
+		if _, exists := visited[serialised]; exists {
+			logger.Debugln("Skipping visited state:", serialised)
+			continue // skip if state already visited
+		}
+		visited[serialised] = struct{}{}
+
+		// Generate next states
+		nextNodes := make([]string, len(currentState.nodes))
+		direction := directions[currentState.steps%directionLength]
+		logger.Debugln("Applying direction:", direction, "at step:", currentState.steps)
+
+		for i, node := range currentState.nodes {
+			if nodePair, exists := nodes[node]; exists {
+				nextNodes[i] = nodePair[directionIndex(direction)]
+				// logger.Debugln("Node:", node, "Next Node:", nextNodes[i])
 			} else {
 				return -1, fmt.Errorf("invalid node: %s", node)
 			}
 		}
-
-		current = next
-		steps++
+		// logger.Debugln("Adding new state to queue:", nodeState{nodes: nextNodes, steps: currentState.steps + 1})
+		queue = append(queue, nodeState{nodes: nextNodes, steps: currentState.steps + 1})
+		// logger.Debugln("Processing state:", currentState, "Queue size:", len(queue))
 	}
-	return steps, nil
+
+	return -1, fmt.Errorf("solution not found")
 }
 
 // endWithZ checks if all nodes in the provided slice end with 'Z'. It returns
@@ -191,4 +229,18 @@ func endWithZ(nodes []string) bool {
 		}
 	}
 	return true
+}
+
+// serialisedState ...
+func serialisedState(nodes []string) string {
+	sort.Strings(nodes) // Ensure consistent ordering for serialisation
+	return strings.Join(nodes, ",")
+}
+
+// directionIndex ...
+func directionIndex(direction string) int {
+	if direction == "R" {
+		return 1
+	}
+	return 0
 }
