@@ -27,7 +27,7 @@ The solutions presented in this repository reflect my ongoing learning process a
 | 06 | [Wait For It][23d06] |
 | 07 | [Camel Cards][23d07] |
 | 08 | [Haunted Wasteland][23d08] |
-| 09 |  |
+| 09 | [Mirage Maintenance][23d09] |
 | 10 |  |
 | 11 |  |
 | 12 |  |
@@ -101,6 +101,7 @@ ok     jonoricci/advent-of-code-go/2023/day_07   0.234s
 [23d06]: 2023/day_06/
 [23d07]: 2023/day_07/
 [23d08]: 2023/day_08/
+[23d09]: 2023/day_09/
 
 [url_aoc]: https://adventofcode.com/
 [url_zap]: https://github.com/uber-go/zap
