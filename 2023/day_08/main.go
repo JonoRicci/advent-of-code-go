@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"jonoricci/advent-of-code-go/common"
 	"log"
-	"sort"
 	"strings"
 	"time"
 
@@ -129,118 +128,80 @@ func navigateNodes(directions []string, nodes map[string][2]string) (int, error)
 // nodes are on a step where each node ends in Z.
 func Part2(input []string) (int, error) {
 	start := time.Now()
-	sum := 0
 
 	directions := parseDirections(input[0])
 	nodes := parseNodes(input[1:])
 
-	sum, err := navigateGhostNodes(directions, nodes)
+	// Find individual path lengths
+	var pathLengths []int
+	for node := range nodes {
+		if strings.HasSuffix(node, "A") {
+			length, err := navigateIndividualPath(node, "Z", directions, nodes)
+			if err != nil {
+				return 0, err
+			}
+			pathLengths = append(pathLengths, length)
+		}
+	}
+
+	// Calculate LCM of path lengths
+	lcm, err := calculateLCM(pathLengths)
 	if err != nil {
 		return 0, err
 	}
 
 	logger.Infoln("Part 2 took:", time.Since(start))
-	return sum, nil
+	return lcm, nil
 }
 
-// navigateGhostNodes takes a slice of directions and a map of nodes, starting
-// from all nodes ending with 'A'. It navigates through the nodes based on the
-// directions until all current nodes end with 'Z'. The directions are applied
-// cyclically.
-func navigateGhostNodes(directions []string, nodes map[string][2]string) (int, error) {
-	// Initial setup to identify start nodes and prepare data structures for memoization, etc.
-	// Implement an efficient traversal algorithm, possibly using BFS, DFS, or a modified version suitable for this problem.
-	// Incorporate cycle detection to avoid infinite loops in paths.
-	// Use memoization to store and reuse results of subproblems.
-	// Prune paths that do not contribute to the solution.
-	// Return the step count when the condition is met.
-
-	// Identify start nodes (end in "A")
-	var startNodes []string
-	for node := range nodes {
-		if strings.HasSuffix(node, "A") {
-			startNodes = append(startNodes, node)
-		}
-	}
-	logger.Debugln("Starting nodes:", startNodes)
-
-	// My attempt at BFS (Breadth First Search)
-	// Queue for BFS
-	type nodeState struct {
-		nodes []string
-		steps int
-	}
-	queue := []nodeState{{nodes: startNodes, steps: 0}}
-
-	if len(startNodes) == 0 {
-		logger.Debugln("No starting nodes ending with 'A' found")
-		return -1, fmt.Errorf("no starting nodes found")
-	}
-
-	// Track visited states
-	visited := make(map[string]struct{})
-
+// navigateIndividualPath navigates from a given start node to an end node (that
+// ends with 'Z').
+func navigateIndividualPath(startNode, endSuffix string, directions []string, nodes map[string][2]string) (int, error) {
+	steps := 0
 	directionLength := len(directions)
-	for len(queue) > 0 {
-		currentState := queue[0] // Deqeue first element
-		queue = queue[1:]        // Queue is empty
+	currentNode := startNode
 
-		// Check if all nodes end with "Z"
-		if endWithZ(currentState.nodes) {
-			logger.Debugln("Solution found at steps:", currentState.steps)
-			return currentState.steps, nil
+	for !strings.HasSuffix(currentNode, endSuffix) {
+		direction := directions[steps%directionLength]
+		nextNode := nodes[currentNode][directionIndex(direction)]
+		if nextNode == "" {
+			return -1, fmt.Errorf("invalid node: %s", currentNode)
 		}
-
-		// Serialise current state for cycle detection
-		serialised := serialisedState(currentState.nodes)
-		if _, exists := visited[serialised]; exists {
-			logger.Debugln("Skipping visited state:", serialised)
-			continue // skip if state already visited
-		}
-		visited[serialised] = struct{}{}
-
-		// Generate next states
-		nextNodes := make([]string, len(currentState.nodes))
-		direction := directions[currentState.steps%directionLength]
-		logger.Debugln("Applying direction:", direction, "at step:", currentState.steps)
-
-		for i, node := range currentState.nodes {
-			if nodePair, exists := nodes[node]; exists {
-				nextNodes[i] = nodePair[directionIndex(direction)]
-				// logger.Debugln("Node:", node, "Next Node:", nextNodes[i])
-			} else {
-				return -1, fmt.Errorf("invalid node: %s", node)
-			}
-		}
-		// logger.Debugln("Adding new state to queue:", nodeState{nodes: nextNodes, steps: currentState.steps + 1})
-		queue = append(queue, nodeState{nodes: nextNodes, steps: currentState.steps + 1})
-		// logger.Debugln("Processing state:", currentState, "Queue size:", len(queue))
+		currentNode = nextNode
+		steps++
 	}
-
-	return -1, fmt.Errorf("solution not found")
+	return steps, nil
 }
 
-// endWithZ checks if all nodes in the provided slice end with 'Z'. It returns
-// true if every node in the slice has a name ending with 'Z', otherwise false.
-func endWithZ(nodes []string) bool {
-	for _, node := range nodes {
-		if !strings.HasSuffix(node, "Z") {
-			return false
-		}
-	}
-	return true
-}
-
-// serialisedState ...
-func serialisedState(nodes []string) string {
-	sort.Strings(nodes) // Ensure consistent ordering for serialisation
-	return strings.Join(nodes, ",")
-}
-
-// directionIndex ...
+// directionIndex converts a direction character ('L' or 'R') into an index (0 or 1).
 func directionIndex(direction string) int {
 	if direction == "R" {
 		return 1
 	}
 	return 0
+}
+
+// calculateLCM calculates the least common multiple of a slice of integers.
+func calculateLCM(numbers []int) (int, error) {
+	if len(numbers) == 0 {
+		return 0, fmt.Errorf("empty slice provided")
+	}
+	lcm := numbers[0]
+	for _, num := range numbers[1:] {
+		lcm = lcmTwoNumbers(lcm, num)
+	}
+	return lcm, nil
+}
+
+// lcmTwoNumbers calculates the LCM of two numbers.
+func lcmTwoNumbers(a, b int) int {
+	return a * b / gcdTwoNumbers(a, b)
+}
+
+// gcdTwoNumbers calculates the greatest common divisor (GCD) of two numbers.
+func gcdTwoNumbers(a, b int) int {
+	for b != 0 {
+		a, b = b, a%b
+	}
+	return a
 }
