@@ -17,33 +17,33 @@ The solutions presented in this repository reflect my ongoing learning process a
 
 ## Solutions
 
-| Day | 2023 |
-|---|---|
-| 01 | [Trebuchet?!][23d01] |
-| 02 | [Cube Conundrum][23d02] |
-| 03 | [Gear Ratios][23d03] |
-| 04 | [Scratchcards][23d04] |
-| 05 | [If You Give A Seed A Fertilizer][23d05] |
-| 06 | [Wait For It][23d06] |
-| 07 | [Camel Cards][23d07] |
-| 08 | [Haunted Wasteland][23d08] |
-| 09 | [Mirage Maintenance][23d09] |
-| 10 |  |
-| 11 |  |
-| 12 |  |
-| 13 |  |
-| 14 |  |
-| 15 |  |
-| 16 |  |
-| 17 |  |
-| 18 |  |
-| 19 |  |
-| 20 |  |
-| 21 |  |
-| 22 |  |
-| 23 |  |
-| 24 |  |
-| 25 |  |
+| Day | 2023 | 2022 | 2021 | 2020 | 2019 | 2018 | 2017 | 2016 | 2015 |
+|---|---|---|---|---|---|---|---|---|---|
+| 01 | [Trebuchet?!][23d01] |  |  |  |  |  |  |  | [Not Quite Lisp][15d01] |
+| 02 | [Cube Conundrum][23d02] |  |  |  |  |  |  |  |  |
+| 03 | [Gear Ratios][23d03] |  |  |  |  |  |  |  |  |
+| 04 | [Scratchcards][23d04] |  |  |  |  |  |  |  |  |
+| 05 | [If You Give A Seed A Fertilizer][23d05] |  |  |  |  |  |  |  |  |
+| 06 | [Wait For It][23d06] |  |  |  |  |  |  |  |  |
+| 07 | [Camel Cards][23d07] |  |  |  |  |  |  |  |  |
+| 08 | [Haunted Wasteland][23d08] |  |  |  |  |  |  |  |  |
+| 09 | [Mirage Maintenance][23d09] |  |  |  |  |  |  |  |  |
+| 10 | [Pipe Maze][23d10] |  |  |  |  |  |  |  |  |
+| 11 |  |  |  |  |  |  |  |  |  |
+| 12 |  |  |  |  |  |  |  |  |  |
+| 13 |  |  |  |  |  |  |  |  |  |
+| 14 |  |  |  |  |  |  |  |  |  |
+| 15 |  |  |  |  |  |  |  |  |  |
+| 16 |  |  |  |  |  |  |  |  |  |
+| 17 |  |  |  |  |  |  |  |  |  |
+| 18 |  |  |  |  |  |  |  |  |  |
+| 19 |  |  |  |  |  |  |  |  |  |
+| 20 |  |  |  |  |  |  |  |  |  |
+| 21 |  |  |  |  |  |  |  |  |  |
+| 22 |  |  |  |  |  |  |  |  |  |
+| 23 |  |  |  |  |  |  |  |  |  |
+| 24 |  |  |  |  |  |  |  |  |  |
+| 25 |  |  |  |  |  |  |  |  |  |
 
 ## Usage
 
@@ -93,6 +93,22 @@ ok     jonoricci/advent-of-code-go/2023/day_07   0.234s
 
 <!-- Links -->
 
+[15d01]: 2015/day_01/
+
+[16d01]: 2016/day_01/
+
+[17d01]: 2017/day_01/
+
+[18d01]: 2018/day_01/
+
+[19d01]: 2019/day_01/
+
+[20d01]: 2020/day_01/
+
+[21d01]: 2021/day_01/
+
+[22d01]: 2022/day_01/
+
 [23d01]: 2023/day_01/
 [23d02]: 2023/day_02/
 [23d03]: 2023/day_03/
@@ -102,6 +118,7 @@ ok     jonoricci/advent-of-code-go/2023/day_07   0.234s
 [23d07]: 2023/day_07/
 [23d08]: 2023/day_08/
 [23d09]: 2023/day_09/
+[23d10]: 2023/day_10/
 
 [url_aoc]: https://adventofcode.com/
 [url_zap]: https://github.com/uber-go/zap
